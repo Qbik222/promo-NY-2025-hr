@@ -3,12 +3,13 @@
     const urlParams = new URLSearchParams(window.location.search);
     const participateParam = 'reg';
 
-    const FUTURE_QUEST_TYPE = 'future',
-        OLD_QUEST_TYPE = 'old',
-        ACTIVE_QUEST_TYPE = 'active';
+    // const FUTURE_QUEST_TYPE = 'future',
+    //     OLD_QUEST_TYPE = 'old',
+    //     ACTIVE_QUEST_TYPE = 'active';
 
     const
         resultsTableOther = document.querySelector('.tableResults__body-other'),
+        mainBlock = document.querySelector(".fav__page"),
         topResultsTable = document.getElementById('top-users'),
         unauthMsgs = document.querySelectorAll('.unauth-msg'),
         participateBtns = document.querySelectorAll('.btn-join'),
@@ -32,7 +33,9 @@
     const hrLeng = document.querySelector('#ukLeng');
     const enLeng = document.querySelector('#enLeng');
 
-    let locale = 'hr';
+    let locale = sessionStorage.getItem("locale") ? sessionStorage.getItem("locale") : "hr";
+
+    mainBlock.classList.add(locale)
 
     if (hrLeng) locale = 'hr';
     if (enLeng) locale = 'en';
@@ -41,6 +44,19 @@
 
     let i18nData = {};
     let userId;
+
+    function setState(newLocale) {
+        locale = newLocale;
+        sessionStorage.setItem('locale', locale);
+    }
+    function toggleState() {
+        const newLocale = locale === 'en' ? 'hr' : 'en';
+        setState(newLocale);
+        window.location.reload()
+    }
+    document.querySelector('.en-btn').addEventListener('click', () => {
+        toggleState();
+    });
     // let userId = 100340020;
 
     function loadTranslations() {
@@ -134,7 +150,7 @@
             users = res[0];
             quests = (res[1] || []);
             // console.log(quests);
-            // renderUsers(users);
+            renderUsers(users);
             // refreshQuests(quests, userInfo)
             translate();
         })
@@ -468,6 +484,12 @@
 
     }
 
+    function formatText(text) {
+        return text.split('(')[0]
+    }
+
+
+
     function populateUsersTable(users, currentUserId, table, allUsers) {
         table.innerHTML = '';
         if (users && users.length) {
@@ -483,43 +505,33 @@
                 if (prizePlaceCss) {
                     additionalUserRow.classList.add(prizePlaceCss);
                 }
-                const prizeKey = getPrizeTranslationKey(place)
+                const prizeKey = getPrizeTranslationKey(user.points)
                 additionalUserRow.innerHTML = `
                         <div class="tableResults__body-col" ${checkCurrentUser}>${place}</div>
                         <div class="tableResults__body-col">${checkCurrentUser ? user.userid : maskUserId(user.userid)}</div>
                         <div class="tableResults__body-col">${Math.floor(user.points)}</div>
-                        <div class="tableResults__body-col">${prizeKey ? translateKey(prizeKey) : ' - '}</div>
+                        <div class="tableResults__body-col">${prizeKey ? formatText(translateKey(prizeKey)) : ' - '}</div>
                     `;
                 table.append(additionalUserRow);
             });
         }
     }
-
-    function getPrizeTranslationKey(place) {
-        if (place <= 5) {
-            return `prize_${place}`
-        } else if (place <= 10) {
-            return `prize_6-10`
-        } else if (place <= 50) {
-            return `prize_11-50`
-        } else if (place <= 100) {
-            return `prize_51-100`
-        } else if (place <= 200) {
-            return `prize_101-200`
-        } else if (place <= 201) {
-            return `prize_201-300`
-        } else if (place <= 400) {
-            return `prize_301-400`
-        } else if (place <= 500) {
-            return `prize_401-500`
-        } else if (place <= 600) {
-            return `prize_501-600`
-        } else if (place <= 650) {
-            return `prize_601-650`
-        } else if (place <= 700) {
-            return `prize_651-700`
+    function getPrizeTranslationKey(points) {
+        if (points >= 10000) {
+            return 'prize_1';
+        } else if (points >= 5000 && points <= 9999) {
+            return 'prize_2';
+        } else if (points >= 1500 && points <= 4999) {
+            return 'prize_3';
+        } else if (points >= 500 && points <= 1499) {
+            return 'prize_4';
+        }else if (points >= 150 && points <= 499) {
+            return 'prize_5';
+        } else if (points >= 50 && points <= 149) {
+            return 'prize_6';
         }
     }
+
 
     function translateKey(key) {
         if (!key) {

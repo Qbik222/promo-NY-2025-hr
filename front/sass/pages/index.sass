@@ -19,7 +19,7 @@
   --promo-bg-color: #00012B
 
 //for test
-.dark-btn, .week-btn
+.dark-btn, .week-btn, .en-btn
   position: fixed
   top: 0
   left: 0
@@ -27,6 +27,8 @@
 
 .week-btn
   top: 25px
+.en-btn
+  top: 50px
 
 //fonts
 
@@ -94,7 +96,7 @@ body
           margin: -60vw 0 0 0
       &__sam
         &-text
-          padding: 99px 20px 20px 84px
+          padding: 103px 20px 20px 84px
           @media screen and (max-width: 600px)
             padding: 11.5vw 2vw 10vw 10.5vw
           &-wrap
@@ -106,16 +108,24 @@ body
               font-size: 3.5vw
               line-height: 2.8vw
               max-width: 17vw
-    .tableResults__row._yourPlace .tableResults__body-col:first-child::after
-      background: url("../img/result/you-en.svg") no-repeat 0 0/contain
-    .questBtn
-      font-size: 38px
-      line-height: 42px
-      @media screen and (max-width: 600px)
-        font-size: 31px
-    .quest__item-btn
-      font-size: 24px
-      line-height: 34px
+      .tableResults__row._yourPlace, .tableResults__body-col:first-child::after
+        background: url("../img/result/you-en.svg") no-repeat 0 0/contain
+      .questBtn
+        font-size: 38px
+        line-height: 42px
+        @media screen and (max-width: 600px)
+          font-size: 31px
+      .quest__item-btn
+        font-size: 24px
+        line-height: 34px
+    .tableResults
+      &__row, &__body
+        &._yourPlace
+          position: relative
+          .tableResults__body-col:first-child
+            &::before
+              background: url("../img/result/you-en.svg") no-repeat 0 0/contain
+
 
 .custom-btn
   position: relative
@@ -744,7 +754,7 @@ body
       margin-right: 15px
       display: flex
       align-items: center
-      justify-content: center
+      justify-content: flex-start
       color: var(--promo-color-white)
       text-align: center
       span
@@ -757,9 +767,9 @@ body
       &:nth-child(2)
         width: 20%
       &:nth-child(3)
-        width: 30%
+        width: 22%
       &:nth-child(4)
-        width: 42%
+        width: 44%
         margin-right: 0
         font-size: 13px
         line-height: 16px
@@ -799,11 +809,11 @@ body
     &._yourPlace
       position: relative
       .tableResults__body-col:first-child
-        &::after
+        &::before
           content: ''
           position: absolute
-          left: -15px
-          bottom: 27px
+          left: -24px
+          bottom: 33px
           width: 28px
           height: 24px
           display: inline-block
@@ -811,8 +821,9 @@ body
           @media screen and (max-width: 600px)
             width: 20px
             height: 17px
-            bottom: 15px
-            left: -10px
+            bottom: 50%
+            transform: translate(0, 50%)
+            left: 25px
     &::before
       content: ''
       position: absolute
