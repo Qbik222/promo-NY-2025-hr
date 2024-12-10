@@ -1203,7 +1203,7 @@ body
   position: relative
   &__container
     margin: 20px auto 0
-    max-width: 350px
+    max-width: 500px
     padding: 0 25px
     @media screen and (max-width: 600px)
       margin: 0 auto
@@ -1243,12 +1243,14 @@ body
     text-align: center
     margin: 0 0 20px
   &__wrap
-    width: 300px
+    width: 500px
     padding: 25px 30px
     background: var(--promo-gradient-detail)
     backdrop-filter: blur(10px)
     border: 3px solid var(--promo-color-white)
     border-radius: 20px
+    @media screen and (max-width: 600px)
+      width: 300px
     @media screen and (max-width: 360px)
       width: 280px
   &__table
