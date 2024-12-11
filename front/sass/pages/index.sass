@@ -125,6 +125,13 @@ body
           .tableResults__body-col:first-child
             &::before
               background: url("../img/result/you-en.svg") no-repeat 0 0/contain
+    .game
+      &__list
+        &-title
+          .uk
+            display: none
+          .en
+            display: block
 
 
 .custom-btn
@@ -210,14 +217,16 @@ body
     @media screen and (max-width: 600px)
       padding: 20px 20px
     &-wrap
-      height: 400px
-      overflow-y: scroll
+      max-height: 400px
+      height: fit-content
+      overflow-y: auto
       font-family: $font-suisse-reg
       font-size: 14px
       line-height: 28px
       color: var(--promo-color-gray)
       letter-spacing: .02em
       padding: 0 20px 0 0
+      scrollbar-width: auto
       @media screen and (max-width: 600px)
         padding: 0 15px 0 0
       &::-webkit-scrollbar
@@ -392,7 +401,7 @@ body
 
 .rules
   position: relative
-  z-index: 11
+  z-index: 12
   &__container
     max-width: 1430px
     padding: 0 15px
@@ -406,7 +415,7 @@ body
     line-height: 76px
     text-align: center
     color: var(--promo-color-white)
-    text-shadow: var(--promo-shadow-text-blue)
+    text-shadow: 0px 0px 55px rgba(0, 198, 255, 0.62), 0px 0px 15px rgba(0, 198, 255, 0.62), 0px 0px 15px rgba(0, 198, 255, 0.62), 0px 0px 20px rgba(0, 198, 255, 0.62), 0px 0px 20px rgba(0, 198, 255, 0.62)
     margin: 0 auto 20px
   &__text
     font-family: $font-suisse-reg
@@ -534,6 +543,7 @@ body
     font-size: 17px
     line-height: 32px
     margin-top: 115px
+    z-index: 5
     color: var(--promo-color-gray)
   &__title
     transform-origin: left center
@@ -543,6 +553,7 @@ body
     line-height: 56px
     color: var(--promo-color-white)
     text-shadow: var(--promo-shadow-text-blue)
+    white-space: nowrap
     margin: 0 0 20px
   &__text
     font-family: $font-suisse-reg
@@ -909,8 +920,12 @@ body
       position: absolute
       top: 20%
       left: 34%
-      max-width: 365px
+      max-width: 415px
       width: 23.8%
+      .uk
+        display: block
+      .en
+        display: none
   &__btn
     align-self: center
     margin: -325px 0 50px 0
