@@ -33,7 +33,7 @@
     const hrLeng = document.querySelector('#ukLeng');
     const enLeng = document.querySelector('#enLeng');
 
-    let locale = sessionStorage.getItem("locale") ? sessionStorage.getItem("locale") : "hr";
+    let locale = "hr"
 
     mainBlock.classList.add(locale)
 
@@ -45,21 +45,8 @@
     let i18nData = {};
     let userId;
     // userId = 100300268;
-    userId = 1499938;
+    // userId = 1499938;
 
-    function setState(newLocale) {
-        locale = newLocale;
-        sessionStorage.setItem('locale', locale);
-    }
-    function toggleState() {
-        const newLocale = locale === 'en' ? 'hr' : 'en';
-        setState(newLocale);
-        window.location.reload()
-    }
-    document.querySelector('.en-btn').addEventListener('click', () => {
-        toggleState();
-    });
-    // let userId = 100340020;
 
     function loadTranslations() {
         return fetch(`${apiURL}/translates/${locale}`).then(res => res.json())
@@ -86,7 +73,6 @@
                 elem.innerHTML = i18nData[key] || '*----NEED TO BE TRANSLATED----*   key:  ' + key;
                 elem.removeAttribute('data-translate');
             })
-            console.log("translate is working")
         }
         refreshLocalizedClass();
     }
@@ -137,7 +123,6 @@
 
     const InitPage = () => {
         initDrop();
-        questStartBtns.forEach(questStartBtn => questStartBtn.addEventListener('click', (e) => { registerInQuest(); }));
         weeksSelector.forEach((w, i) => w.addEventListener('click', e => {
             if (i === selectedWeekTabId) {
                 return;
@@ -265,23 +250,6 @@
         });
     }
 
-    function registerInQuest() {
-        if (!userId) {
-            return;
-        }
-
-        const params = {userid: userId};
-
-        request('/questreg', {
-            method: 'POST',
-            body: JSON.stringify(params)
-        }).then(res => {
-            playBtn.classList.remove('hide');
-            popupPlayBtn.classList.remove('hide');
-            questStartBtns.forEach(questStartBtn => questStartBtn.classList.add('hide'));
-        });
-    }
-
     const renderUsers = (users) => {
         resultsTableWrapper.classList.remove('hide');
         resultsTableOther.classList.remove('hide');
@@ -321,9 +289,6 @@
                 const checkCurrentUser = currentUserId && currentUserId === user.userid;
                 const additionalUserRow = document.createElement('div');
                 additionalUserRow.classList.add('tableResults__row');
-                // console.log(checkCurrentUser)
-                // console.log(currentUserId, user.userid)
-
                 if (checkCurrentUser) {
                     additionalUserRow.classList.add('_yourPlace');
                 }
@@ -358,7 +323,6 @@
             return 'prize_6';
         }
     }
-
 
     function translateKey(key) {
         if (!key) {
@@ -432,28 +396,5 @@
             item.classList.toggle('_open')
         })
     })
-
-    // for test
-    document.querySelector(".dark-btn").addEventListener("click", () =>{
-        document.body.classList.toggle("dark")
-    })
-
-    let week = 1
-
-    const gameWrap = document.querySelector(".game__house"),
-          weekBtn = document.querySelector(".week-btn");
-
-    weekBtn.addEventListener("click", () =>{
-        if(week >= 4) {
-            gameWrap.classList.remove(`week${week}`)
-            week = 1
-            gameWrap.classList.add(`week${week}`)
-            return
-        }
-        gameWrap.classList.remove(`week${week}`)
-        week++
-        gameWrap.classList.add(`week${week}`)
-    })
-
 
 })();
