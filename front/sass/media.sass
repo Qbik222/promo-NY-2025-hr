@@ -209,13 +209,13 @@
         .info__image
           min-width: auto
           max-width: 1140px
-          margin: 0 -90px 20px
+          margin: 0 -45px -10px
       &-two
         flex-direction: column-reverse
         justify-content: flex-end
         .info__image
           min-width: auto
-          margin: 0 -90px 20px
+          margin: 0 -60px 20px
 
 @media screen and (max-width: 550px)
   .info
@@ -245,7 +245,7 @@
   .result
     padding: 100px 0 70px
     &::after
-      top: -50px
+      top: 40px
     &__title
       font-size: 56px
       line-height: 56px
@@ -258,7 +258,10 @@
   .result
     padding: 70px 0 12vw
     &::after
-      top: -50px
+      top: 0
+      min-width: 900px
+      left: 50%
+      transform: translateX(-50%)
     &__title
       font-size: 36px
       line-height: 36px
@@ -270,6 +273,10 @@
       line-height: 22px
     &__btn
       margin: -260px 4px 50px 0
+  .custom-drop
+    &-title
+      font-size: 13px
+      line-height: 16px
   .tableResults
     margin: -150px -20px 0 0
     &__wrap
