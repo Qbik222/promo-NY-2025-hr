@@ -31,7 +31,21 @@
     const hrLeng = document.querySelector('#ukLeng');
     const enLeng = document.querySelector('#enLeng');
 
-    let locale = "en"
+    // let locale = "en"
+    let locale = sessionStorage.getItem("locale") ? sessionStorage.getItem("locale") : "hr";
+
+    function setState(newLocale) {
+        locale = newLocale;
+        sessionStorage.setItem('locale', locale);
+    }
+    function toggleState() {
+        const newLocale = locale === 'en' ? 'hr' : 'en';
+        setState(newLocale);
+        window.location.reload()
+    }
+    document.querySelector('.en-btn').addEventListener('click', () => {
+        toggleState();
+    });
 
     mainBlock.classList.add(locale)
 
