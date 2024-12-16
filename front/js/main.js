@@ -2,10 +2,8 @@
     const apiURL = 'https://fav-prom.com/api_ny_hr';
     const urlParams = new URLSearchParams(window.location.search);
     const participateParam = 'reg';
-
-    // const FUTURE_QUEST_TYPE = 'future',
-    //     OLD_QUEST_TYPE = 'old',
-    //     ACTIVE_QUEST_TYPE = 'active';
+    const PROMO_START_DATE = new Date("2024-12-15T22:00:00Z");
+    const PROMO_DURATION_WEEKS = 4;
 
     const
         resultsTableOther = document.querySelector('.tableResults__body-other'),
@@ -33,7 +31,7 @@
     const hrLeng = document.querySelector('#ukLeng');
     const enLeng = document.querySelector('#enLeng');
 
-    let locale = "hr"
+    let locale = "en"
 
     mainBlock.classList.add(locale)
 
@@ -44,8 +42,7 @@
 
     let i18nData = {};
     let userId;
-    // userId = 100300268;
-    // userId = 1499938;
+    userId = 1454805;
 
 
     function loadTranslations() {
@@ -143,28 +140,35 @@
     }
 
     function calculateRecentPromoWeeks() {
-        const date = Date.now();
-        if (date < new Date("2024-10-07T21:00:00Z")) {
-            return 1;
-        } else if (date < new Date("2024-10-21T21:00:00Z")) {
-            return 2;
-        } else if (date < new Date("2024-10-28T21:00:00Z")) {
-            return 3;
-        } else {
-            return 4;
+        let currStart = PROMO_START_DATE;
+        let currEnd = PROMO_START_DATE;
+        const today = new Date();
+        const recentWeeks = [];
+        let weekCnt = 0;
+        let weekDiff = 7;
+        while (currEnd <= today && weekCnt < PROMO_DURATION_WEEKS) {
+            currStart = currEnd;
+            currEnd = new Date(currEnd.getTime());
+            currEnd.setDate(currEnd.getDate() + weekDiff);
+            recentWeeks.push(new WeekRange(currStart, currEnd));
+            weekDiff = 7;
+            weekCnt++;
         }
+        return recentWeeks;
     }
 
     function refreshWeekTabs() {
-        selectedWeekTabId = calculateRecentPromoWeeks() - 1;
-        if (!selectedWeekTabId || selectedWeekTabId === 0) { // promo not started yet
+        const recentWeekRanges = calculateRecentPromoWeeks();
+        selectedWeekTabId = recentWeekRanges.length - 1;
+        if (!recentWeekRanges || recentWeekRanges.length === 0) { // promo not started yet
             weeksContainer.classList.add('hide');
             return;
         }
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < weeksSelector.length; i++) {
+            const weekRange = recentWeekRanges[i];
             const weekSelector = weeksSelector[i];
-            if (selectedWeekTabId < i) {
+            if (!weekRange) {
                 weekSelector.classList.add('hide');
             }
         }
@@ -194,6 +198,7 @@
     }
 
     function init() {
+        refreshWeekTabs();
         if (window.store) {
             var state = window.store.getState();
             userId = state.auth.isAuthorized && state.auth.id || '';
